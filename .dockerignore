@@ -1,0 +1,9 @@
+node_modules
+.next
+.git
+functions
+api-server
+.agents
+*.md
+.env*
+firestore-debug.log

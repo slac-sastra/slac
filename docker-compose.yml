@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_API_BASE_URL: https://legal-aid-sastra.hyrup.in
+        NEXT_PUBLIC_FIREBASE_API_KEY: AIzaSyDETo1wgjrXyQUd4J8MqujNks1Hoh16cYM
+        NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: legal-aid-ai-5d9be.firebaseapp.com
+        NEXT_PUBLIC_FIREBASE_PROJECT_ID: legal-aid-ai-5d9be
+        NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: legal-aid-ai-5d9be.firebasestorage.app
+        NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: "206581650673"
+        NEXT_PUBLIC_FIREBASE_APP_ID: "1:206581650673:web:37b380819fd155a8420550"
+    container_name: legal-aid-frontend
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
