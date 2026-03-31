@@ -44,3 +44,4 @@ next-env.d.ts
 /api-server/
 /.agents/
 /node_modules
+firestore-debug.log
