@@ -9,7 +9,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { VoiceInput } from "@/components/ui/voice-input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Scale, Send, Loader2, FileText, Download, CheckCircle, AlertCircle } from "lucide-react";
@@ -20,12 +20,14 @@ interface CaseResult {
   summary: string;
   pdfUrl: string;
   pdfFileName: string;
-  caseId: string;
+  petitionNumber: string;
 }
 
 export default function Home() {
   const { language } = useStore();
   const t = translations[language];
+  // Map UI language to Sarvam BCP-47 code for STT
+  const sarvamLang = language === "ta" ? "ta-IN" : "en-IN";
 
   const [formData, setFormData] = useState({
     name: "", age: "", phone: "",
@@ -55,7 +57,7 @@ export default function Home() {
         summary: (res as any).summary || "",
         pdfUrl: (res as any).pdfUrl || "",
         pdfFileName: (res as any).pdfFileName || "",
-        caseId: res.caseId,
+        petitionNumber: (res as any).petitionNumber || res.caseId,
       });
     } catch (err: any) {
       setError(err.message || "Something went wrong");
@@ -106,7 +108,18 @@ export default function Home() {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="name">{t.name}</Label>
-                      <Input id="name" name="name" value={formData.name} onChange={handleChange} required placeholder={t.name} />
+                      <VoiceInput
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        placeholder={t.name}
+                        languageCode={sarvamLang}
+                        onVoiceInput={(text) =>
+                          setFormData((prev) => ({ ...prev, name: text }))
+                        }
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="age">{t.age}</Label>
@@ -122,30 +135,71 @@ export default function Home() {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="village">{t.village}</Label>
-                      <Input id="village" name="village" value={formData.village} onChange={handleChange} required placeholder={t.village} />
+                      <VoiceInput
+                        id="village"
+                        name="village"
+                        value={formData.village}
+                        onChange={handleChange}
+                        required
+                        placeholder={t.village}
+                        languageCode={sarvamLang}
+                        onVoiceInput={(text) =>
+                          setFormData((prev) => ({ ...prev, village: text }))
+                        }
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="taluk">{t.taluk}</Label>
-                      <Input id="taluk" name="taluk" value={formData.taluk} onChange={handleChange} required placeholder={t.taluk} />
+                      <VoiceInput
+                        id="taluk"
+                        name="taluk"
+                        value={formData.taluk}
+                        onChange={handleChange}
+                        required
+                        placeholder={t.taluk}
+                        languageCode={sarvamLang}
+                        onVoiceInput={(text) =>
+                          setFormData((prev) => ({ ...prev, taluk: text }))
+                        }
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="district">{t.district}</Label>
-                      <Input id="district" name="district" value={formData.district} onChange={handleChange} required placeholder={t.district} />
+                      <VoiceInput
+                        id="district"
+                        name="district"
+                        value={formData.district}
+                        onChange={handleChange}
+                        required
+                        placeholder={t.district}
+                        languageCode={sarvamLang}
+                        onVoiceInput={(text) =>
+                          setFormData((prev) => ({ ...prev, district: text }))
+                        }
+                      />
                     </div>
                   </div>
 
                   {/* Issue */}
-                  <div className="space-y-2">
+                  <div className="space-y-2 pb-2">
                     <Label htmlFor="issue">{t.issue}</Label>
-                    <Textarea
+                    <VoiceInput
                       id="issue"
                       name="issue"
+                      inputType="textarea"
                       value={formData.issue}
                       onChange={handleChange}
                       required
                       placeholder={t.issuePlaceholder}
                       rows={5}
                       className="resize-none"
+                      languageCode={sarvamLang}
+                      onVoiceInput={(text) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          issue: prev.issue ? prev.issue + " " + text : text,
+                        }))
+                      }
                     />
                   </div>
 
@@ -180,7 +234,8 @@ export default function Home() {
                 <CheckCircle className="w-6 h-6 shrink-0" />
                 <div>
                   <p className="font-semibold">{t.successAlert}</p>
-                  <p className="text-sm opacity-80">Case ID: {result.caseId}</p>
+                  <p className="text-sm opacity-80">Petition No: {result.petitionNumber}</p>
+                  <p className="text-sm opacity-70 mt-1">{t.notificationSent}</p>
                 </div>
               </div>
 

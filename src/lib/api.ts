@@ -1,17 +1,18 @@
-﻿export interface CaseFormData {
+export interface CaseFormData {
   name: string; age: number; phone: string;
   village: string; taluk: string; district: string; issue: string;
 }
 
 export interface CaseResult {
-  id: string; name: string; age: number; phone: string;
+  id: string; petitionNumber?: string; name: string; age: number; phone: string;
   village: string; taluk: string; district: string; issue: string;
   guidance: string; petition: string; summary: string;
   pdfFileName: string; pdfUrl: string; createdAt: string;
+  notificationSent: boolean;
 }
 
 export interface CasesResponse { cases: CaseResult[]; total: number }
-export interface SubmitCaseResponse { success: boolean; caseId: string; message: string }
+export interface SubmitCaseResponse { success: boolean; caseId: string; petitionNumber: string; message: string }
 export interface AdminLoginResponse { success: boolean; message: string }
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || '';

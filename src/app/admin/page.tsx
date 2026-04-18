@@ -239,7 +239,17 @@ function AdminDashboardComponent() {
                     <div className="space-y-1 flex-1">
                       <div className="flex items-center gap-2">
                         <h4 className="font-bold text-foreground text-lg">{caseItem.name}</h4>
+                        {caseItem.petitionNumber && caseItem.petitionNumber !== "-" && (
+                          <Badge variant="outline" className="font-mono text-xs border-primary/20 bg-primary/5 text-primary">
+                            {caseItem.petitionNumber}
+                          </Badge>
+                        )}
                         <Badge variant="secondary" className="text-xs">Age {caseItem.age}</Badge>
+                        {caseItem.notificationSent ? (
+                           <Badge variant="outline" className="text-xs border-green-200 bg-green-50 text-green-700">📱 Sent</Badge>
+                        ) : (
+                           <Badge variant="outline" className="text-xs border-yellow-200 bg-yellow-50 text-yellow-700">📱 Pending</Badge>
+                        )}
                       </div>
                       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
                         <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {caseItem.village}, {caseItem.district}</span>
